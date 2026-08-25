@@ -7,7 +7,7 @@
 
 ---
 
-## 🚀 Overview for IT Recruiters & Engineering Managers
+## 🚀 Overview
 
 **Why I built this:**  
 As a medical doctor, I faced the challenge of providing students and colleagues with accessible, realistic, and dynamic cardiology clinical cases. Traditional static images are limited. I taught myself to code and built **EKG Maker** to solve this problem programmatically.
