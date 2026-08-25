@@ -1,0 +1,64 @@
+{
+  "semilla": 40172026,
+  "paciente": {
+    "nombre": "Alberto Cifuentes Marín",
+    "edad": "58",
+    "sexo": "Masculino",
+    "expediente": "URG-2026-1187",
+    "fecha": "17/08/2026",
+    "hora": "14:05",
+    "interpretacion": "Varón de 58 años, tabaquismo activo e hipertensión arterial. Dolor retroesternal opresivo de 40 minutos, irradiado a brazo izquierdo, con diaforesis y náusea. PA 145/95 mmHg, FC 98 lpm, FR 20 rpm, SpO2 96% al aire ambiente. ECG: ritmo sinusal a 98 lpm, PR 158 ms, QRS 94 ms, eje +40°. Elevación del ST de 2 mm en V1 a V4, con descenso especular de 0.8-1 mm en DII, DIII y aVF. Sin elevación en DI ni aVL. IAMCEST anterior (anteroseptal) en fase aguda, compatible con oclusión de la descendente anterior en segmento medio. Tiempo de isquemia 40 minutos: ventana óptima para reperfusión. Diagnóstico clínico-electrocardiográfico; no esperar troponinas. Caso simulado con fines educativos."
+  },
+  "ondas": {
+    "P":  {"amp": 0.13, "dur": 100, "apex": 0.5},
+    "PR": {"dur": 158},
+    "Q":  {"amp": -0.04, "dur": 18},
+    "R":  {"amp": 1.0, "dur": 48},
+    "S":  {"amp": -0.28, "dur": 32},
+    "ST": {"nivel": 0, "dur": 90, "curva": 0.6},
+    "T":  {"amp": 0.42, "dur": 168, "apex": 0.6},
+    "TP": {"dur": 0},
+    "U":  {"amp": 0.03, "dur": 90}
+  },
+  "ejes": {"p": 55, "qrs": 40, "t": 35},
+  "ritmo": {
+    "origenAuricular": "sinusal",
+    "fcA": 98,
+    "fcV": 98,
+    "conduccion": "normal",
+    "relacion": 2,
+    "irregularidad": 0,
+    "variabilidad": 0.02,
+    "escape": "union",
+    "ectopia": "ninguna",
+    "cadaEctopico": 6,
+    "modo": "normal"
+  },
+  "morfologia": {
+    "qrs": "normal",
+    "perfil": "normal",
+    "hbai": false,
+    "hbpi": false,
+    "osborn": false,
+    "delta": false
+  },
+  "isquemia": {"territorio": "anterior", "elevacion": 0.2, "fase": "aguda"},
+  "stDeriv": {
+    "I": -0.075, "II": 0, "III": 0, "aVR": 0, "aVL": -0.075, "aVF": 0,
+    "V1": 0.025, "V2": 0, "V3": 0, "V4": 0.025, "V5": 0, "V6": 0
+  },
+  "artefactos": {"basal": 0.05, "muscular": 0.05, "red": 0},
+  "papel": {
+    "tamano": "carta-h",
+    "formato": "4x3",
+    "duracion": 10,
+    "velocidad": 25,
+    "ganancia": 10,
+    "tiraRitmo": true,
+    "mostrarMarca": true,
+    "mostrarAviso": true,
+    "mostrarTitulo": true
+  },
+  "monitor": {"canales": 1, "deriv": "V2", "velocidad": 25, "ganancia": 10},
+  "presetActual": "Caso clínico: IAMCEST anterior (DA media) en varón de 58 años, fumador e hipertenso"
+}

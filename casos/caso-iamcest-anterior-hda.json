@@ -1,0 +1,64 @@
+{
+  "semilla": 76122026,
+  "paciente": {
+    "nombre": "Ricardo Espinoza Valdés",
+    "edad": "76",
+    "sexo": "Masculino",
+    "expediente": "URG-2026-0916",
+    "fecha": "16/08/2026",
+    "hora": "07:40",
+    "interpretacion": "Varón de 76 años. Antecedente de hemorragia digestiva alta hace dos años, con hospitalización y transfusión. Ingresa por dolor torácico. ECG: ritmo sinusal a 96 lpm, QRS de 102 ms, elevación del ST de 4 mm en V2 y V3, 3.6 mm en V4, 3.2 mm en V1 y 1.4-1.6 mm en I y aVL, con descenso recíproco de 1.6-2 mm en II, III y aVF. IAMCEST de cara anterior. El antecedente hemorrágico condiciona el riesgo de sangrado de la estrategia antitrombótica. Caso simulado con fines educativos."
+  },
+  "ondas": {
+    "P":  {"amp": 0.13, "dur": 105, "apex": 0.5},
+    "PR": {"dur": 170},
+    "Q":  {"amp": -0.06, "dur": 20},
+    "R":  {"amp": 1.0, "dur": 50},
+    "S":  {"amp": -0.28, "dur": 32},
+    "ST": {"nivel": 0, "dur": 80, "curva": 0.7},
+    "T":  {"amp": 0.35, "dur": 165, "apex": 0.62},
+    "TP": {"dur": 0},
+    "U":  {"amp": 0.03, "dur": 90}
+  },
+  "ejes": {"p": 55, "qrs": 40, "t": 35},
+  "ritmo": {
+    "origenAuricular": "sinusal",
+    "fcA": 96,
+    "fcV": 96,
+    "conduccion": "normal",
+    "relacion": 2,
+    "irregularidad": 0,
+    "variabilidad": 0.02,
+    "escape": "union",
+    "ectopia": "ninguna",
+    "cadaEctopico": 6,
+    "modo": "normal"
+  },
+  "morfologia": {
+    "qrs": "normal",
+    "perfil": "normal",
+    "hbai": false,
+    "hbpi": false,
+    "osborn": false,
+    "delta": false
+  },
+  "isquemia": {"territorio": "anterior", "elevacion": 0.4, "fase": "aguda"},
+  "stDeriv": {
+    "I": 0, "II": 0, "III": 0, "aVR": 0, "aVL": 0, "aVF": 0,
+    "V1": 0, "V2": 0, "V3": 0, "V4": 0, "V5": 0, "V6": 0
+  },
+  "artefactos": {"basal": 0.05, "muscular": 0.04, "red": 0},
+  "papel": {
+    "tamano": "carta-h",
+    "formato": "4x3",
+    "duracion": 10,
+    "velocidad": 25,
+    "ganancia": 10,
+    "tiraRitmo": true,
+    "mostrarMarca": true,
+    "mostrarAviso": true,
+    "mostrarTitulo": true
+  },
+  "monitor": {"canales": 1, "deriv": "V3", "velocidad": 25, "ganancia": 10},
+  "presetActual": "Caso clínico: IAMCEST anterior en varón de 76 años con HDA previa"
+}

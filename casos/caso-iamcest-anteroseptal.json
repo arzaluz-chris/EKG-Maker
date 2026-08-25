@@ -1,0 +1,54 @@
+{
+  "semilla": 12345,
+  "paciente": {
+    "nombre": "María Fernanda Ríos Beltrán",
+    "edad": "55",
+    "sexo": "Femenino",
+    "expediente": "URG-2026-0815",
+    "fecha": "15/08/2026",
+    "hora": "23:05",
+    "interpretacion": "Dolor torácico opresivo de 40 min, irradiado a hombro y brazo izquierdos, con náusea y diaforesis. Tabaquismo. TA 150/90 mmHg, FC 88 lpm, SatO2 96% al aire ambiente. ECG: ritmo sinusal a 88 lpm, QRS de 98 ms, elevación del ST de 2 mm en V2 y V3 con descenso recíproco inferior. IAMCEST anteroseptal. Caso simulado con fines educativos."
+  },
+  "ondas": {
+    "P":  {"amp": 0.15, "dur": 100, "apex": 0.5},
+    "PR": {"dur": 160},
+    "Q":  {"amp": -0.08, "dur": 20},
+    "R":  {"amp": 1.1, "dur": 48},
+    "S":  {"amp": -0.25, "dur": 30},
+    "ST": {"nivel": 0, "dur": 85, "curva": 0.6},
+    "T":  {"amp": 0.35, "dur": 170, "apex": 0.62},
+    "TP": {"dur": 0},
+    "U":  {"amp": 0.04, "dur": 90}
+  },
+  "ejes": {"p": 50, "qrs": 45, "t": 40},
+  "ritmo": {
+    "origenAuricular": "sinusal",
+    "fcA": 88,
+    "fcV": 88,
+    "conduccion": "normal",
+    "relacion": 2,
+    "irregularidad": 0,
+    "variabilidad": 0.02,
+    "escape": "union",
+    "ectopia": "ninguna",
+    "cadaEctopico": 6,
+    "modo": "normal"
+  },
+  "morfologia": {
+    "qrs": "normal",
+    "perfil": "normal",
+    "hbai": false,
+    "hbpi": false,
+    "osborn": false,
+    "delta": false
+  },
+  "isquemia": {"territorio": "anteroseptal", "elevacion": 0.2, "fase": "aguda"},
+  "stDeriv": {
+    "I": 0, "II": 0, "III": 0, "aVR": 0, "aVL": 0, "aVF": 0,
+    "V1": 0, "V2": 0, "V3": 0, "V4": 0, "V5": 0, "V6": 0
+  },
+  "artefactos": {"basal": 0.04, "muscular": 0.03, "red": 0},
+  "papel": {"tamano": "carta-h", "duracion": 10, "velocidad": 25, "ganancia": 10, "tiraRitmo": true},
+  "monitor": {"canales": 1, "deriv": "V2", "velocidad": 25, "ganancia": 10},
+  "presetActual": "Caso clínico: IAMCEST anteroseptal (V2-V3)"
+}

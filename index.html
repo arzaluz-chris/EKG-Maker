@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EKG Maker — Simulador de electrocardiograma</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <div>
+      <h1 class="marca">EKG<span>Maker</span></h1>
+      <div class="sub">Simulador de electrocardiograma para casos clínicos</div>
+    </div>
+    <div class="der">
+      <button class="btn" id="btn-guardar">Guardar caso</button>
+      <button class="btn" id="btn-json">Exportar .json</button>
+      <button class="btn pri" id="btn-papel">Ver 12 derivaciones ▸</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ COLUMNA IZQUIERDA ============ -->
+    <div class="col">
+      <div class="tarjeta acento">
+        <h3>Biblioteca clínica</h3>
+        <select id="sel-preset"></select>
+        <div class="nota" id="preset-desc" style="margin-top:7px"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Ondas</h3>
+        <div class="chips" id="chips"></div>
+        <div id="lista-ondas"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Mis casos</h3>
+        <div class="campo" style="display:flex;gap:6px">
+          <input type="text" id="nombre-caso" placeholder="Nombre del caso">
+          <button class="btn ok" id="btn-guardar-caso">Guardar</button>
+        </div>
+        <div id="lista-casos"></div>
+        <input type="file" id="archivo-json" accept=".json" style="display:none">
+        <button class="btn" style="width:100%;margin-top:6px" id="btn-importar">Importar .json</button>
+      </div>
+    </div>
+
+    <!-- ============ COLUMNA CENTRAL ============ -->
+    <div class="col">
+      <div class="tarjeta acento">
+        <h3 id="titulo-onda">Controles de onda</h3>
+        <div class="lienzo-caja" style="background:#05080d;border-radius:6px;margin-bottom:9px">
+          <canvas id="lienzo-onda" height="150"></canvas>
+        </div>
+        <div id="controles-onda"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Ritmo</h3>
+        <div id="controles-ritmo"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Ejes eléctricos y morfología</h3>
+        <div id="controles-ejes"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Isquemia / lesión</h3>
+        <div id="controles-isquemia"></div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Artefactos</h3>
+        <div id="controles-artefactos"></div>
+      </div>
+    </div>
+
+    <!-- ============ COLUMNA DERECHA ============ -->
+    <div class="col">
+      <div class="tarjeta acento">
+        <h3>Monitor en vivo</h3>
+        <div class="monitor">
+          <div class="lienzo-caja"><canvas id="lienzo-monitor" height="420"></canvas></div>
+          <div class="fc"><b id="fc-monitor">—</b><small>lpm</small></div>
+        </div>
+        <div class="barra">
+          <div class="seg" id="seg-canales">
+            <button data-c="1" class="on">1 canal</button>
+            <button data-c="3">3 canales</button>
+            <button data-c="12">12 canales</button>
+          </div>
+          <select id="sel-deriv" style="width:auto"></select>
+          <div class="seg" id="seg-vel">
+            <button data-v="25" class="on">25 mm/s</button>
+            <button data-v="50">50 mm/s</button>
+          </div>
+          <div class="seg" id="seg-gan">
+            <button data-g="5">5</button>
+            <button data-g="10" class="on">10</button>
+            <button data-g="20">20 mm/mV</button>
+          </div>
+          <button class="btn" id="btn-pausa">Pausar</button>
+          <label class="check" style="margin:0"><input type="checkbox" id="chk-bip"> Bip</label>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Mediciones calculadas</h3>
+        <div class="medidas" id="medidas"></div>
+        <div class="nota" style="margin-top:8px">QTc por fórmula de Bazett (QT/√RR). Los valores se derivan de los parámetros del simulador.</div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Datos del paciente (ficticios)</h3>
+        <div class="form-paciente" id="form-paciente"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ VISTA DE PAPEL ============ -->
+<div id="vista-papel">
+  <div id="papel-barra">
+    <button class="btn" id="btn-cerrar-papel">◂ Volver al editor</button>
+    <div class="grupo">Papel
+      <select id="sel-papel">
+        <option value="carta-h">Carta horizontal</option>
+        <option value="carta-v">Carta vertical</option>
+        <option value="a4-h">A4 horizontal</option>
+        <option value="a4-v">A4 vertical</option>
+      </select>
+    </div>
+    <div class="grupo">Formato
+      <select id="sel-formato">
+        <option value="tira">Una derivación por fila</option>
+        <option value="4x3">12 en una hoja (4×3 + ritmo)</option>
+      </select>
+    </div>
+    <div class="grupo" id="grupo-duracion">Duración
+      <select id="sel-dur">
+        <option value="5">5 s</option>
+        <option value="6">6 s</option>
+        <option value="10" selected>10 s</option>
+      </select>
+    </div>
+    <div class="grupo">Velocidad
+      <select id="sel-vel-papel"><option value="25">25 mm/s</option><option value="50">50 mm/s</option></select>
+    </div>
+    <div class="grupo">Ganancia
+      <select id="sel-gan-papel"><option value="5">5 mm/mV</option><option value="10" selected>10 mm/mV</option><option value="20">20 mm/mV</option></select>
+    </div>
+    <label class="check" style="margin:0"><input type="checkbox" id="chk-ritmo-abajo" checked> Tira de ritmo (DII)</label>
+    <div class="grupo">Encabezado
+      <label class="check" style="margin:0"><input type="checkbox" id="chk-marca" checked> EKG Maker</label>
+      <label class="check" style="margin:0"><input type="checkbox" id="chk-aviso-educativo" checked> Leyenda educativa</label>
+      <label class="check" style="margin:0"><input type="checkbox" id="chk-titulo-caso" checked> Título del caso</label>
+    </div>
+    <label class="check" style="margin:0"><input type="checkbox" id="chk-zoom" checked> Ajustar a pantalla</label>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn" id="btn-png">Descargar PNG</button>
+      <button class="btn pri" id="btn-imprimir">Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+  <div class="aviso">
+    En el diálogo de impresión elige <b>Escala 100 %</b> (no «Ajustar al área imprimible») y márgenes «Ninguno» para conservar la escala real de 25 mm/s y 10 mm/mV.
+  </div>
+  <div id="hojas"></div>
+</div>
+
+<style id="estilo-pagina">@page{size:279.4mm 215.9mm;margin:0}</style>
+
+<script src="app.js"></script>
+</body>
+</html>

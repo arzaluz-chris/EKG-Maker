@@ -1,0 +1,64 @@
+{
+  "semilla": 58082026,
+  "paciente": {
+    "nombre": "Gerardo Molina Requena",
+    "edad": "58",
+    "sexo": "Masculino",
+    "expediente": "URG-2026-1142",
+    "fecha": "17/08/2026",
+    "hora": "11:42",
+    "interpretacion": "Varón de 58 años, tabaquismo activo (20 cigarrillos/día). Dolor torácico retroesternal opresivo de 2 horas, 8/10, con diaforesis y náusea. TA 110/70 mmHg, FC 98 lpm, FR 20 rpm, SatO2 95% al aire ambiente. ECG: ritmo sinusal a 98 lpm, PR 160 ms, QRS 96 ms, eje +70°. Elevación del ST de 3 mm en DII, DIII y aVF, con descenso especular de 1.5 mm en DI y 2.1 mm en aVL. IAMCEST de cara inferior, fase aguda. El diagnóstico es clínico y electrocardiográfico: NO se debe esperar troponinas para activar la reperfusión. Solicitar derivaciones derechas (V3R-V4R) y posteriores (V7-V9) sin retrasar el tratamiento. Caso simulado con fines educativos."
+  },
+  "ondas": {
+    "P":  {"amp": 0.14, "dur": 100, "apex": 0.5},
+    "PR": {"dur": 160},
+    "Q":  {"amp": -0.05, "dur": 20},
+    "R":  {"amp": 1.0, "dur": 48},
+    "S":  {"amp": -0.26, "dur": 30},
+    "ST": {"nivel": 0, "dur": 90, "curva": 0.6},
+    "T":  {"amp": 0.38, "dur": 160, "apex": 0.62},
+    "TP": {"dur": 0},
+    "U":  {"amp": 0.03, "dur": 90}
+  },
+  "ejes": {"p": 60, "qrs": 70, "t": 60},
+  "ritmo": {
+    "origenAuricular": "sinusal",
+    "fcA": 98,
+    "fcV": 98,
+    "conduccion": "normal",
+    "relacion": 2,
+    "irregularidad": 0,
+    "variabilidad": 0.02,
+    "escape": "union",
+    "ectopia": "ninguna",
+    "cadaEctopico": 6,
+    "modo": "normal"
+  },
+  "morfologia": {
+    "qrs": "normal",
+    "perfil": "normal",
+    "hbai": false,
+    "hbpi": false,
+    "osborn": false,
+    "delta": false
+  },
+  "isquemia": {"territorio": "inferior", "elevacion": 0.3, "fase": "aguda"},
+  "stDeriv": {
+    "I": 0, "II": 0.03, "III": 0, "aVR": 0, "aVL": 0, "aVF": 0,
+    "V1": 0, "V2": 0, "V3": 0, "V4": 0, "V5": 0, "V6": 0
+  },
+  "artefactos": {"basal": 0.05, "muscular": 0.05, "red": 0},
+  "papel": {
+    "tamano": "carta-h",
+    "formato": "4x3",
+    "duracion": 10,
+    "velocidad": 25,
+    "ganancia": 10,
+    "tiraRitmo": true,
+    "mostrarMarca": true,
+    "mostrarAviso": true,
+    "mostrarTitulo": true
+  },
+  "monitor": {"canales": 1, "deriv": "II", "velocidad": 25, "ganancia": 10},
+  "presetActual": "Caso clínico: IAMCEST inferior en varón de 58 años, estrategia de reperfusión"
+}

@@ -1,0 +1,54 @@
+{
+  "semilla": 20260815,
+  "paciente": {
+    "nombre": "Jorge Alberto Mendoza Sáenz",
+    "edad": "68",
+    "sexo": "Masculino",
+    "expediente": "URG-2026-0842",
+    "fecha": "15/08/2026",
+    "hora": "04:20",
+    "interpretacion": "Ritmo sinusal 78 lpm. Bloqueo de rama izquierda con QRS de 132 ms (QS en V1-V3, R ancha mellada sin q septal en I, aVL, V5 y V6). La repolarización muestra la discordancia esperada del bloqueo en V1-V3 (elevación de 1.8 mm sobre QRS negativo), pero en I, aVL, V5 y V6 el ST está elevado 1.8-2.2 mm de forma CONCORDANTE con un QRS positivo: criterio 1 de Sgarbossa, altamente específico de oclusión coronaria aguda. Descenso recíproco inferior. Caso simulado con fines educativos."
+  },
+  "ondas": {
+    "P":  {"amp": 0.14, "dur": 105, "apex": 0.5},
+    "PR": {"dur": 175},
+    "Q":  {"amp": -0.08, "dur": 20},
+    "R":  {"amp": 1.1, "dur": 48},
+    "S":  {"amp": -0.25, "dur": 30},
+    "ST": {"nivel": 0, "dur": 90, "curva": 0.5},
+    "T":  {"amp": -0.35, "dur": 180, "apex": 0.6},
+    "TP": {"dur": 0},
+    "U":  {"amp": 0.03, "dur": 90}
+  },
+  "ejes": {"p": 50, "qrs": -20, "t": 40},
+  "ritmo": {
+    "origenAuricular": "sinusal",
+    "fcA": 78,
+    "fcV": 78,
+    "conduccion": "normal",
+    "relacion": 2,
+    "irregularidad": 0,
+    "variabilidad": 0.03,
+    "escape": "union",
+    "ectopia": "ninguna",
+    "cadaEctopico": 6,
+    "modo": "normal"
+  },
+  "morfologia": {
+    "qrs": "bri",
+    "perfil": "normal",
+    "hbai": false,
+    "hbpi": false,
+    "osborn": false,
+    "delta": false
+  },
+  "isquemia": {"territorio": "lateral", "elevacion": 0.42, "fase": "aguda"},
+  "stDeriv": {
+    "I": -0.203, "II": -0.029, "III": 0.126, "aVR": 0.106, "aVL": -0.203, "aVF": 0.056,
+    "V1": 0.178, "V2": 0.178, "V3": 0.178, "V4": -0.083, "V5": -0.203, "V6": -0.203
+  },
+  "artefactos": {"basal": 0.05, "muscular": 0.03, "red": 0},
+  "papel": {"tamano": "carta-h", "duracion": 10, "velocidad": 25, "ganancia": 10, "tiraRitmo": true},
+  "monitor": {"canales": 1, "deriv": "V5", "velocidad": 25, "ganancia": 10},
+  "presetActual": "Caso clínico: BRI + elevación concordante del ST en V5-V6 (Sgarbossa)"
+}
