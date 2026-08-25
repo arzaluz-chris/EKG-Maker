@@ -67,7 +67,7 @@ Since this is a client-side only application without build steps or external dep
 
 I am a physician transitioning into tech, passionate about HealthTech, software engineering, and building tools that make a difference. 
 
-- **LinkedIn:** [My LinkedIn](https://www.linkedin.com/in/YOUR_LINKEDIN) *(Replace with your actual link)*
+- **LinkedIn:** [My LinkedIn](https://www.linkedin.com/in/christian-arzaluz/) *(Replace with your actual link)*
 - **GitHub:** [arzaluz-chris](https://github.com/arzaluz-chris)
 
 *Feedback, suggestions, and networking are always welcome!*
