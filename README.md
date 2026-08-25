@@ -7,6 +7,16 @@
 
 ---
 
+## 📸 Screenshots
+
+![EKG Maker Dashboard](assets/dashboard.png)
+*Real-time interactive dashboard for customizing EKG parameters, rhythms, and morphology.*
+
+![EKG Maker 12-Lead Print View](assets/print_view.png)
+*High-fidelity 12-lead EKG export view, ready for medical exams and clinical scenarios.*
+
+---
+
 ## 🚀 Overview
 
 **Why I built this:**  
