@@ -251,9 +251,16 @@ function verticesQRS(deriv,e,opciones){
     vert=[[0,0],[0.002,2.2*(ES_PRECORDIAL(deriv)?0.6:1)],[0.005,0]].concat(vert.map(p=>[p[0]+0.008,p[1]]));
     dur+=0.008;
   }else if(tipo==="wpw"||m.delta){
-    suave=0.004;
-    const dDelta=0.055;
-    ({v:vert,dur}=armar([{amp:r*0.30,dur:dDelta,apex:1},{amp:r,dur:dr},{amp:sw,dur:ds}]));
+    /* preexcitación: la onda delta es un empastamiento progresivo (cóncavo hacia arriba) del inicio
+       del QRS que se funde con la rama ascendente de la R, sin volver a la línea de base; sustituye a
+       la q septal y alarga el QRS a ~130 ms */
+    suave=0.006;
+    const dDelta=0.050, hDelta=0.30;
+    vert=[[0,0]];
+    for(let k=1;k<=6;k++){ const u=k/6; vert.push([dDelta*u,r*hDelta*Math.pow(u,1.4)]); }
+    vert.push([dDelta+dr*0.55,r],[dDelta+dr,0]);
+    if(ds>0) vert.push([dDelta+dr+ds*0.5,sw],[dDelta+dr+ds,0]);
+    dur=dDelta+dr+Math.max(0,ds);
   }else{
     ({v:vert,dur}=armar([{amp:q,dur:dq},{amp:r,dur:dr},{amp:sw,dur:ds}]));
   }
@@ -456,6 +463,28 @@ function valorComplejo(dt,p,ev){
     return vertSuave(q.vert,dt,q.suave)+rampa;
   }
   const durST=Math.max(0.02,p.durST);
+  /* ST elevado con T positiva: el segmento ST y la T forman una sola curva que sale del punto J,
+     sube hasta el vértice de la T y baja con la rama descendente de la T. La curvatura del ST
+     decide la forma de la subida: >0 convexa (lesión; «lápida» cuando el ST domina), 0 rectilínea,
+     <0 cóncava (pericarditis). Así no aparece una joroba del ST separada de la T. */
+  if(st>0.08&&aT>=0&&!ectop){
+    /* el vértice cae algo antes que el de la T aislada y la rama descendente es más larga y suave,
+       como en el registro real; si el ST domina, el vértice queda apenas por encima del punto J */
+    const xp=durST+dT*p.apexT*0.75, W=xp+dT*(1-p.apexT)*1.5, x=dt-durQ;
+    if(x<W){
+      const pico=Math.max(st*1.08,st*0.6+aT);
+      if(x<=xp){
+        const u=x/xp, c=Math.max(-1,Math.min(1,p.curvaST));
+        const h=(1-c)*u+c*Math.sin(u*Math.PI/2);
+        return st+(pico-st)*h;
+      }
+      const v=(x-xp)/(W-xp);
+      return pico*(1+Math.cos(Math.PI*v))/2;
+    }
+    const u0=durQ+W+0.06;
+    if(dt<u0+p.durU) return p.ampU*campana(dt-u0,p.durU,0.5);
+    return 0;
+  }
   if(dt<durQ+durST){
     const f=(dt-durQ)/durST;
     /* curva: 0 recto, >0 convexo (lesión), <0 cóncavo (pericarditis) */
@@ -621,7 +650,8 @@ const PRESETS={
   "Bloqueo AV 2:1":pre("Una de cada dos P conduce.",
     {ritmo:{conduccion:"mobitz2",relacion:2,fcA:80},ondas:{PR:{dur:180}}}),
   "Bloqueo AV completo":pre("Disociación AV: aurículas a 90/min y escape ventricular a 35 lpm.",
-    {ritmo:{conduccion:"completo",fcA:90,fcV:35,escape:"ventricular"},morfologia:{qrs:"ventricular"}}),
+    {ritmo:{conduccion:"completo",fcA:90,fcV:35,escape:"ventricular"},morfologia:{qrs:"ventricular"},
+     ejes:{qrs:100}}),   /* eje del escape: con 45° el QRS sale casi isoeléctrico en DII y la tira de ritmo no lo enseña */
   "Bloqueo de rama derecha":pre("QRS ≥120 ms, rSR' en V1-V2, S ancha en I y V6, con ST y T discordantes en V1-V2.",
     {morfologia:{qrs:"brd"}},0.12),
   "Bloqueo de rama izquierda":pre("QRS ≥120 ms, QS en V1-V3 y R ancha mellada en V5-V6 sin q septal, con ST y T discordantes.",
@@ -631,7 +661,7 @@ const PRESETS={
   "Hemibloqueo posterior izquierdo":pre("Eje desviado a +120° con rS en I y qR en III.",
     {ejes:{qrs:120},morfologia:{hbpi:true}}),
   "Wolff-Parkinson-White":pre("PR corto (<120 ms), onda delta y QRS ancho por preexcitación.",
-    {ondas:{PR:{dur:90}},morfologia:{qrs:"wpw"}}),
+    {ondas:{PR:{dur:90},P:{dur:85},T:{amp:0.25}},morfologia:{qrs:"wpw"}},0.08),
 
   "— Isquemia e infarto —":null,
   "IAMCEST anteroseptal":pre("Elevación del ST en V2-V3 (con V1 y V4 menores) e imagen recíproca inferior.",
