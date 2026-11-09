@@ -152,6 +152,10 @@ const ESTADO_BASE={
   /* desnivel del ST propio de cada derivación, en mV; se suma al nivel global y al territorio.
      Sirve para la discordancia secundaria del BRI, el marcapasos o los ritmos ventriculares. */
   stDeriv:{I:0,II:0,III:0,aVR:0,aVL:0,aVF:0,V1:0,V2:0,V3:0,V4:0,V5:0,V6:0},
+  /* ajuste opcional y disperso de la morfología de una derivación (solo las que lo necesitan):
+     {V2:{q:mV que se suma a la Q (negativo = más profunda), qDur:ms, r:× amplitud de R, rDur:ms,
+          s:× amplitud de S, t:mV que se suma a la T}}. Vacío = sin cambios; los casos antiguos no lo traen. */
+  ajusteDeriv:{},
   artefactos:{basal:0,muscular:0,red:0},
   papel:{tamano:"carta-h",formato:"tira",duracion:10,velocidad:25,ganancia:10,tiraRitmo:true,
          mostrarMarca:true,mostrarAviso:true,mostrarTitulo:true},
@@ -196,6 +200,14 @@ function verticesQRS(deriv,e,opciones){
   q=o.Q.amp*Math.abs(fq)*(ES_PRECORDIAL(deriv)?1:Math.sign(fq)||1);
   r=o.R.amp*fr;
   sw=o.S.amp*Math.abs(fs)*(ES_PRECORDIAL(deriv)?1:Math.sign(fr)||1);
+  const aj=ajusteDe(deriv,e);
+  if(aj){
+    if(typeof aj.q==="number") q+=aj.q;
+    if(typeof aj.qDur==="number") dq=aj.qDur*s;
+    if(typeof aj.r==="number") r*=aj.r;
+    if(typeof aj.rDur==="number") dr=aj.rDur*s;
+    if(typeof aj.s==="number") sw*=aj.s;
+  }
 
   const armar=comps=>{
     let t=0;const v=[[0,0]];
@@ -274,6 +286,11 @@ function verticesQRS(deriv,e,opciones){
   return {vert,dur,suave};
 }
 
+/* ajuste propio de la derivación (ver ESTADO_BASE.ajusteDeriv), o null */
+function ajusteDe(deriv,e){
+  const a=e.ajusteDeriv&&e.ajusteDeriv[deriv];
+  return (a&&typeof a==="object")?a:null;
+}
 /* desplazamiento del punto J por isquemia, en mV, para una derivación */
 function nivelST(deriv,e){
   const is=e.isquemia;
@@ -318,6 +335,8 @@ function ampT(deriv,e){
       else if(is.fase==="cronica")t-=is.elevacion*f*2.2;
     }
   }
+  const aj=ajusteDe(deriv,e);
+  if(aj&&typeof aj.t==="number") t+=aj.t;
   return t;
 }
 /* onda Q patológica en fase Q / crónica */
@@ -678,14 +697,22 @@ const PRESETS={
     {morfologia:{qrs:"bri"},isquemia:{territorio:"lateral",elevacion:0.42,fase:"aguda"},
      ondas:{ST:{nivel:0,dur:90,curva:0.5},T:{amp:-0.35,dur:180,apex:0.6}},
      ritmo:{fcA:78,fcV:78},ejes:{qrs:-20}},0.15),
-  "IAM posterior":pre("Descenso del ST y R altas en V1-V3 (imagen en espejo).",
-    {isquemia:{territorio:"posterior",elevacion:0.40,fase:"aguda"},morfologia:{perfil:"hvd"}}),
+  /* posterior aislado (circunfleja): solo la imagen en espejo de V1-V3, sin elevación inferior.
+     Se arma con desniveles y ajustes por derivación porque el territorio «posterior» del motor
+     incluye la cara inferior (inferoposterior). */
+  "IAM posterior":pre("IAM posterior aislado: imagen en espejo en V1-V3 con descenso horizontal del ST, R alta y ancha (R/S >1 en V2) y T positiva y alta; sin elevación inferior.",
+    {ondas:{ST:{nivel:0,dur:90,curva:0}},
+     stDeriv:{V1:-0.20,V2:-0.25,V3:-0.20},
+     ajusteDeriv:{V1:{r:4.0,rDur:60,s:0.35,t:0.55},V2:{r:2.6,rDur:60,s:0.45,t:0.45},V3:{r:1.5,s:0.65,t:0.30}}}),
   "IAM de ventrículo derecho":pre("Elevación en V1 y III mayor que en II; acompaña al infarto inferior.",
     {isquemia:{territorio:"vd",elevacion:0.40,fase:"aguda"},ritmo:{fcA:55,fcV:55}}),
   "T hiperagudas (fase muy precoz)":pre("Ondas T altas y anchas antes de la elevación franca del ST.",
     {isquemia:{territorio:"anterior",elevacion:0.35,fase:"hiperaguda"}}),
-  "Infarto con onda Q establecido":pre("Onda Q patológica con T negativa; fase evolucionada.",
-    {isquemia:{territorio:"anterior",elevacion:0.35,fase:"q"}}),
+  /* fase «cronica» del motor: Q ≥40 ms y >25 % de la R, ST prácticamente isoeléctrico (residuo 0.03 mV)
+     y T negativa; el ajuste de T en II, III y aVF anula la T alta «recíproca» que no corresponde a un infarto antiguo */
+  "Infarto con onda Q establecido":pre("Infarto anterior establecido: Q patológicas (≥40 ms, >25 % de la R) en V1-V4, ST isoeléctrico y T negativa simétrica en el territorio.",
+    {isquemia:{territorio:"anterior",elevacion:0.30,fase:"cronica"},ondas:{T:{apex:0.5}},
+     ajusteDeriv:{II:{t:-0.26},III:{t:-0.33},aVF:{t:-0.30}}}),
   "Isquemia subendocárdica":pre("Descenso horizontal del ST con T negativas, sin elevación.",
     {ondas:{ST:{nivel:-0.22,dur:100,curva:-0.2},T:{amp:-0.30,dur:180,apex:0.55}},ritmo:{fcA:95,fcV:95}}),
   "Pericarditis aguda":pre("Elevación cóncava difusa del ST con descenso del PR y elevación del ST en aVR invertida.",
@@ -710,9 +737,16 @@ const PRESETS={
     {morfologia:{perfil:"hvi"},ondas:{R:{amp:1.6,dur:55},S:{amp:-0.35,dur:40}},ejes:{qrs:20,t:210}}),
   "Hipertrofia ventricular derecha":pre("R dominante en V1 con eje derecho y sobrecarga derecha.",
     {morfologia:{perfil:"hvd"},ejes:{qrs:110,t:250}}),
-  "Brugada tipo 1":pre("Elevación descendente del ST en V1-V2 con T negativa.",
-    {isquemia:{territorio:"septal",elevacion:0.35,fase:"aguda"},morfologia:{qrs:"brd"},
-     ondas:{ST:{nivel:0,dur:80,curva:0.9},T:{amp:-0.3,dur:170,apex:0.55}}}),
+  /* solo V1-V2: el resto del trazo queda normal. La curvatura del ST solo actúa donde hay desnivel. */
+  "Brugada tipo 1":pre("Elevación del ST ≥2 mm en domo (coved) en V1-V2 seguida de T negativa solo en V1-V2, con r' de BRDHH incompleto; resto de derivaciones normales.",
+    {ondas:{ST:{nivel:0,dur:80,curva:0.3}},
+     stDeriv:{V1:0.30,V2:0.35},
+     ajusteDeriv:{V1:{s:0.7,t:-0.30},V2:{s:0.7,t:-0.70}}}),
+  "Miocardiopatía hipertrófica":pre("Q profundas y estrechas («en daga», <40 ms) en I, aVL, II, III, aVF, V5 y V6, voltaje de HVI y T negativas laterales.",
+    {morfologia:{perfil:"hvi"},ondas:{R:{amp:1.6,dur:55},S:{amp:-0.35,dur:40}},ejes:{qrs:45,t:210},
+     stDeriv:{I:-0.05,aVL:-0.05,V5:-0.08,V6:-0.08},
+     ajusteDeriv:{I:{q:-0.40,qDur:28},aVL:{q:-0.30,qDur:28},II:{q:-0.45,qDur:28},III:{q:-0.35,qDur:28},
+                  aVF:{q:-0.40,qDur:28},V5:{q:-0.55,qDur:28},V6:{q:-0.50,qDur:28}}}),
   "Tromboembolia pulmonar (S1Q3T3)":pre("S en I, Q y T negativa en III, taquicardia sinusal y sobrecarga derecha.",
     {ritmo:{fcA:115,fcV:115},ejes:{qrs:100,t:280},morfologia:{perfil:"hvd"},ondas:{S:{amp:-0.45,dur:45}}}),
   "Hipotermia (onda J de Osborn)":pre("Deflexión J al final del QRS con bradicardia.",
